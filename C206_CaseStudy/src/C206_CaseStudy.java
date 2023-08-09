@@ -6,7 +6,7 @@ public class C206_CaseStudy {
 		ArrayList<Menu> menuList = new ArrayList<Menu>();
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		ArrayList<Stall> stallList = new ArrayList<>();
-		private static ArrayList<Queue> queues = new ArrayList<>();
+		ArrayList<Queue> queues = new ArrayList<>();
 		ArrayList<Feedback> feedbackList = new ArrayList<>();
 
 
@@ -280,7 +280,7 @@ public class C206_CaseStudy {
 
 	public static void viewspecificStalls(ArrayList<Stall> stallList, String keyword) {
 		C206_CaseStudy.setHeader("List of specific stalls");
-		String output = String.format("%-10s %-10s %-10s\n", "Stall No", "Stall Name", "Location",
+		String output = String.format("%-10s %-10s %-10s %-10s\n", "Stall No", "Stall Name", "Location",
 				"Food Cuisine");
 		output += retrievespecificStalls(stallList, keyword);
 		System.out.println(output);
@@ -312,85 +312,70 @@ public class C206_CaseStudy {
 	}
 
 	//================================= Option 3 Add menu (CRUD - Create) =================================
-	public static Menu inputMenu() {
-		String dishName = Helper.readString("Enter Dish Name > ");
-		String description = Helper.readString("Enter description > ");
-		float price = Helper.readInt("Enter price of the dish > $");
-		String ingredients = Helper.readString("Enter the ingredients in the dish > ");
-		String dietaryInformation = Helper.readString("Enter Dietary Information > ");
+	public static
+	Menu inputMenu() { 
+		String dishName = Helper.readString("Enter Dish Name > "); 
+		String description = Helper.readString("Enter description > "); 
+		float price = Helper.readInt("Enter price of the dish > $"); 
+		String ingredients = Helper.readString("Enter the ingredients in the dish > "); 
+		String dietaryInformation = Helper.readString("Enter Dietary Information > "); 
 
-		Menu contentInput= new Menu(dishName, description, price, ingredients, dietaryInformation);
-		return contentInput;
+		Menu contentInput= new Menu(dishName, description, price, ingredients, dietaryInformation); 
+		return contentInput; 
 
-	}
-	public static void addMenu(ArrayList<Menu> menuList, Menu contentInput) {
-		Menu item;
-		for(int i = 0; i < menuList.size(); i++) {
-			item = menuList.get(i);
-			if (item.getDishName().equalsIgnoreCase(contentInput.getDishName()) )
-				return;
-		}
-		if ((contentInput.getDishName().isEmpty()) || (contentInput.getDescription().isEmpty()) ) {
-			return;
-		}
+	} 
+	public static void addMenu(ArrayList<Menu> menuList, Menu contentInput) { 
+		Menu item; 
+		for(int i = 0; i < menuList.size(); i++) { 
+			item = menuList.get(i); 
+			if (item.getDishName().equalsIgnoreCase(contentInput.getDishName()) ) 
+				return; 
+		} 
+		if ((contentInput.getDishName().isEmpty()) || (contentInput.getDescription().isEmpty()) ) { 
+			return; 
+		} 
 
-		menuList.add(contentInput);
-	}
+		menuList.add(contentInput); 
+	} 
+
 
 
 
 
 	//================================= Option 3 View all menus (CRUD - Read) =================================
-	public static String retrieveAllMenu(ArrayList<Menu> menuList) {
-		String output = "";
-		for (int i = 0; i < menuList.size(); i++) {
-			output += String.format("%-10s %-30s %-10s %-10s %-20d\n",menuList.get(i).getDishName(),
-					menuList.get(i).getDescription(), menuList.get(i).getPrice(),
-					menuList.get(i).getIngredients(),menuList.get(i).getDietaryInformation());
-		}
-		return output;
-	}
+	public static String retrieveAllMenu(ArrayList<Menu> menuList) { 
+		String output = ""; 
+		for (int i = 0; i < menuList.size(); i++) { 
+			output += String.format("%-10s %-30s %-10.2f %-10s %-20s\n",menuList.get(i).getDishName(), 
+					menuList.get(i).getDescription(), menuList.get(i).getPrice(), 
+					menuList.get(i).getIngredients(),menuList.get(i).getDietaryInformation()); 
+		} 
+		return output; 
+	} 
 
-	public static void viewAllMenu(ArrayList<Menu> menuList) {
-		// Input stall name below <stallList.getName()>
-		C206_CaseStudy.setHeader("Stall 1");
-		String output = String.format("%-10s %-30s %-10.2f %-10s %-20s\n", "STALL", "DISH NAME", "DESCRIPTION",
-				"PRICE", "INGREDIENTS", "DIETARY INFORMATION");
-		output += retrieveAllMenu(menuList);	
-		System.out.println(output);
-	}
-
+	public static void viewAllMenu(ArrayList<Menu> menuList) { 
+		// Input stall name below <stallList.getName()> 
+		C206_CaseStudy.setHeader("Stall 1"); 
+		String output = String.format("%-10s %-30s %-10s %-10s %-20s\n", "STALL", "DISH NAME", "DESCRIPTION", 
+				"PRICE", "INGREDIENTS", "DIETARY INFORMATION"); 
+		output += retrieveAllMenu(menuList);  
+		System.out.println(output); 
+	} 
 
 	//================================= Option 3 Delete existing menu (CRUD - Delete) =================================
-	public static boolean doDeleteMenu(ArrayList<Menu> menuList, String dishNameDel) {
+	public static boolean doDeleteMenu(ArrayList<Menu> menuList, String dishNameDel) { 
+		for (int i = 0; i < menuList.size(); i++) { 
+			String dishName = menuList.get(i).getDishName(); 
+			if (dishName.equalsIgnoreCase(dishNameDel)) { 
+				menuList.remove(i); 
+				return true; // Found and deleted 
+			} 
+		} 
+		return false; // Not found 
+	} 
 
-		boolean isFound = false;
 
-		if (dishNameDel.isEmpty() )
-			return false;
 
-		for (int i = 0; i < menuList.size(); i++) {
-			//changes made xe
-			String dishName = menuList.get(i).getDishName();
-			if (dishName.equalsIgnoreCase(dishNameDel)) {
-				isFound = true;
-			}else {
-				isFound = false;
-			}
-		}
-		return isFound;
-	}
-
-	public static void loanCamcorder(ArrayList<Menu> menuList) {
-		C206_CaseStudy.viewAllMenu(menuList);
-		String dishNameDel = Helper.readString("Enter the dish name you want to delete > ");
-		Boolean isFound = doDeleteMenu(menuList, dishNameDel);
-		if (isFound == false) {
-			System.out.println("Invalid Dish Name!");
-		} else {
-			System.out.println(dishNameDel + "'s menu has been deleted.");
-		}
-	}
 
 	//================================= Option 4 Add order (CRUD - Create) =================================
 	public static Order inputOrder() {
@@ -442,7 +427,7 @@ public class C206_CaseStudy {
 
 
 	//================================= Option 5 Add queue (CRUD - Create) =================================
-	public static void addQueue(String queueId, String stallName) {
+	public static void addQueue(ArrayList<Queue> queues, String queueId, String stallName) {
 		// Task 3 - Validate queueId and stallName inputs
 		if (queueId.trim().isEmpty() || stallName.trim().isEmpty()) {
 			System.out.println("Error: Queue ID and Stall Name must not be empty.");
@@ -460,7 +445,7 @@ public class C206_CaseStudy {
 
 	//================================= Option 5 View all queues (CRUD - Read) =================================
 	public static void viewAllQueues() {
-		if (queues.isEmpty()) {
+		if (queue.isEmpty()) {
 			System.out.println("No queues available.");
 		} else {
 			System.out.println("Queues in Canteen:");
@@ -483,10 +468,10 @@ public class C206_CaseStudy {
 
 
 		if (queueToRemove != null) {
-			// Confirm deletion
+			// Confirm deletion 
 			boolean isConfirmed = Helper.readBoolean("Are you sure you want to delete the queue " + queueId + "? (y/n): ");
 			if (isConfirmed) {
-				Queue.remove(queueToRemove);
+				queues.remove(queueToRemove);
 				System.out.println("Queue " + queueId + " has been deleted.");
 			} else {
 				System.out.println("Deletion of queue " + queueId + " canceled.");

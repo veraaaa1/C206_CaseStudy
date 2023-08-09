@@ -17,6 +17,11 @@ public class C206_CaseStudyTest {
 	private Feedback fb3;
 	private ArrayList<Feedback> feedbackList;
 
+	private Stall sl1;
+	private Stall sl2;
+	private Stall sl3;
+	private ArrayList<Stall> stallList;
+
 	@Before
 	public void setUp() throws Exception {
 		mn1 = new Menu("Dish 1", "Description 1", 10.50, "Ingredients 1", "Vegan");
@@ -28,9 +33,13 @@ public class C206_CaseStudyTest {
 		fb2 = new Feedback("Yi Lun", 3, "The spaghetti was pretty okay, but could be better...");
 		fb3 = new Feedback("Xue E", 2, "Oh my god, I hate the pepperoni pizza! Taste so bad...");
 
-
-
 		feedbackList = new ArrayList<Feedback>();
+
+		sl1 = new Stall("Stall 1","AAA","1A","CHI");
+		sl2 = new Stall("Stall 2","BBB","1B","MLY");
+		sl3 = new Stall("Stall 3","CCC","1C","IND");
+
+		stallList = new ArrayList<Stall>();
 	}
 
 
@@ -154,15 +163,122 @@ public class C206_CaseStudyTest {
 		assertEquals("Test that the last feedback is deleted", 1, feedbackList.size());
 	}
 
+	@Test
+	public void testaddStalls() {
+		// Item list is not null and it is empty
+		assertNotNull("Test if there is valid stall arraylist to add to", stallList);
+		assertEquals("Test that the stall arraylist is empty.", 0, stallList.size());
+		//Given an empty list, after adding 1 item, the size of the list is 1
+		C206_CaseStudy.addStalls(stallList, sl1);		
+		assertEquals("Test that the stall arraylist size is 1.", 1, stallList.size());
+
+
+		// Add an item
+		C206_CaseStudy.addStalls(stallList, sl2);
+		assertEquals("Test that the stall arraylist size is now 2.", 2, stallList.size());
+		//The item just added is as same as the last item in the list
+		assertSame("Test that stall is added to the end of the list.", sl2, stallList.get(1));
+
+		// Add an item that already exists in the list
+		C206_CaseStudy.addStalls(stallList, sl2);
+		assertEquals("Test that the stall arraylist size is unchange.", 2, stallList.size());
+
+		// Add an item that has missing detail
+		Stall sl_missing = new Stall("STALL 1", "AAA", "1A", "");
+		C206_CaseStudy.addStalls(stallList, sl_missing);
+		assertEquals("Test that the Stall arraylist size is unchange.", 2, stallList.size());
+	}
+
+	@Test
+	public void testRetrieveAllStalls() {
+		// Test Case 1
+		assertNotNull("Test if there is valid stall arraylist to add to", stallList);
+		assertEquals("Test that the stall arraylist is empty.", 0, stallList.size());
+
+		// Assuming sl1 and sl2 are instances of Stall
+		Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
+		Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
+
+		// Add stalls to the list
+		C206_CaseStudy.addStalls(stallList, sl1);
+		C206_CaseStudy.addStalls(stallList, sl2);
+
+		// Check that the stall ArrayList size is 2
+		assertEquals("Test that Stall arraylist size is 2.", 2, stallList.size());
+
+		// Attempt to retrieve the stalls
+		String allStalls = C206_CaseStudy.retrieveAllStalls(stallList);
+		String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
+		testOutput += String.format("%-10s %-10s %-10s %-10s\n", "STALL 2", "BBB", "1B", "MLY");
+
+		// Check that the display is correct
+		assertEquals("Test that the display is correct.", testOutput, allStalls);
+	}
+
+
+	@Test
+	public void testRetrievespecificStalls() {
+	    // Test Case 1: Test if stallList is not null and empty
+	    assertNotNull("Test if there is a valid stall ArrayList to add to", stallList);
+	    assertEquals("Test that the stall ArrayList is empty.", 0, stallList.size());
+
+	    // Prepare stalls for testing
+	    Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
+	    Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
+
+	    // Add stalls to the list
+	    C206_CaseStudy.addStalls(stallList, sl1);
+	    C206_CaseStudy.addStalls(stallList, sl2);
+
+	    // Check that the stall ArrayList size is 2
+	    assertEquals("Test that the stall ArrayList size is 2.", 2, stallList.size());
+
+	    // Attempt to retrieve the specific stalls
+	    String specificStalls = C206_CaseStudy.retrievespecificStalls(stallList, "AAA"); // Replace "AAA" with the desired keyword
+	    String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
+
+	    // Check that the details are displayed correctly
+	    assertEquals("Test that the display is correct.", testOutput, specificStalls);
+	}
+
+	@Test
+	public void testDeleteStall() {
+	    // Test Case 1
+	    ArrayList<Stall> stallList = new ArrayList<>();
+	    Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
+	    Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
+	    stallList.add(sl1);
+	    stallList.add(sl2);
+
+	    // Attempt to delete an existing stall
+	    C206_CaseStudy.deleteStall(stallList, "STALL 1");
+
+	    // Check that the stall was deleted and list size decreased
+	    assertEquals("Test that the stall list size is 1 after deleting an existing stall.", 1, stallList.size());
+
+	    // Test Case 2
+	    // Attempt to delete a non-existing stall
+	    C206_CaseStudy.deleteStall(stallList, "NON_EXISTING_STALL");
+
+	    // Check that the list size remains the same
+	    assertEquals("Test that the stall list size remains 1 after attempting to delete a non-existing stall.", 1, stallList.size());
+	}
+
+
 	@After
 	public void tearDown() {
 		mn1 = null;
 		mn2 = null;
 		menuList = null;
-		
+
 		fb1 = null;
 		fb2 = null;
 		fb3 = null;
 		feedbackList = null;
+		
+		sl1 = null;
+		sl2 = null;
+		sl3 = null;
+		stallList = null;
 	}
 }
