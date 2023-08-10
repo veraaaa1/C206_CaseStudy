@@ -1,4 +1,3 @@
-
 class Menu {
     private String dishName;
     private String description;
@@ -48,4 +47,3 @@ class Menu {
                 "\nDietary Information: " + dietaryInformation;
     }
 }
-
