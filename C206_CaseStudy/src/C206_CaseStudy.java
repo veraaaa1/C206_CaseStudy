@@ -1,6 +1,8 @@
 
 import java.util.ArrayList;
 
+
+
 public class C206_CaseStudy {
 
 	public static void main(String[] args) {
@@ -164,16 +166,16 @@ public class C206_CaseStudy {
 					// Task 2 in sprint backlog
 					String queueId = Helper.readString("Enter queue ID > ");
 					String stallName = Helper.readString("Enter stall name > ");
-					C206_CaseStudy.addQueue(queueId, stallName);
+					C206_CaseStudy.addQueue(queueList,queueId, stallName);
 
 				} else if (choice == 2) {
 					// View all queues
-					C206_CaseStudy.viewAllQueues();
+					C206_CaseStudy.viewAllqueueList(queueList);
 
 				} else if (choice == 3){
 					// Delete an existing queue
 					String queueId = Helper.readString("Enter queue ID to delete > ");
-					C206_CaseStudy.deleteQueue(queueId);
+					C206_CaseStudy.deleteQueue(queueList,queueId);
 
 
 				}else {
@@ -525,41 +527,36 @@ public class C206_CaseStudy {
 
 
 	//================================= Option 5 Add queue (CRUD - Create) =================================
-    public static void addQueue(String queueId, String stallName) {
+	public static void addQueue(ArrayList<Queue> queueList, String queueId, String stallName) {
 		// Task 3 - Validate queueId and stallName inputs
 		if (queueId.trim().isEmpty() || stallName.trim().isEmpty()) {
 			System.out.println("Error: Queue ID and Stall Name must not be empty.");
 			return;
 		}
 
- 
 
-		// Create a new Queue object and add it to the queues ArrayList
+
+		// Create a new Queue object and add it to the queueList ArrayList
 		Queue queue = new Queue(queueId, stallName);
 		queueList.add(queue);
 		System.out.println("Queue " + queueId + " for " + stallName + " added.");
 	}
 
-	 public static ArrayList<Queue> getQueues() {
-	        return queueList;
-	    }
-
 	//================================= Option 5 View all queues (CRUD - Read) =================================
-	public static void viewAllQueues() {
-		if (queueList.isEmpty()) {
-			System.out.println("No queues available.");
+	public static void viewAllqueueList(ArrayList<Queue> queueList) {
+		
+		if (queueList.size()==0) {
+			System.out.println("No queueList available.");
 		} else {
-			System.out.println("Queues in Canteen:");
+			System.out.println("queueList in Canteen:");
 			for (Queue queue : queueList) {
 				System.out.println(queue.getQueueId() + ": " + queue.getStallName());
 			}
 		}
 	}
-
-
  
 	//================================= Option 5 Delete existing queue (CRUD - Delete) =================================
-	public static void deleteQueue(String queueId) {
+	public static void deleteQueue(ArrayList<Queue> queueList,String queueId) {
 		Queue queueToRemove = null;
 		for (Queue queue : queueList) {
 			if (queue.getQueueId().equals(queueId)) {
@@ -571,7 +568,7 @@ public class C206_CaseStudy {
 
 
 		if (queueToRemove != null) {
-			// Confirm deletion
+			// Confirm deletion 
 			boolean isConfirmed = Helper.readBoolean("Are you sure you want to delete the queue " + queueId + "? (y/n): ");
 			if (isConfirmed) {
 				queueList.remove(queueToRemove);
