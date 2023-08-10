@@ -6,8 +6,9 @@ public class C206_CaseStudy {
 		ArrayList<Menu> menuList = new ArrayList<Menu>();
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		ArrayList<Stall> stallList = new ArrayList<>();
-		ArrayList<Queue> queues = new ArrayList<>();
+		ArrayList<Queue> queueList = new ArrayList<>();
 		ArrayList<Feedback> feedbackList = new ArrayList<>();
+		ArrayList<User> userList = new ArrayList<User>();
 
 
 		int option = 0;
@@ -28,16 +29,16 @@ public class C206_CaseStudy {
 
 				if (choice == 1) {
 					//ADD the add function
-					//C206_CaseStudy.addUser(userList);}
+					C206_CaseStudy.addUser(userList);
 
 
 				} else if (choice == 2) {
 					//ADD the view function
-					//C206_CaseStudy.viewUser(userList);
+					C206_CaseStudy.viewAllUsers(userList);
 
 				} else if (choice == 3){
 					//ADD the delete function
-					//C206_CaseStudy.deleteUser(userList);
+					C206_CaseStudy.deleteUser(userList);
 
 				}else {
 					System.out.println("Invalid choice");
@@ -105,7 +106,8 @@ public class C206_CaseStudy {
 
 				} else if (choice == 3){
 					//ADD the delete function
-					//C206_CaseStudy.deleteMenu(MenuList);
+					        
+					C206_CaseStudy.doDeleteMenu(menuList);
 
 				}else {
 					System.out.println("Invalid choice");
@@ -137,7 +139,7 @@ public class C206_CaseStudy {
 
 				} else if (choice == 3){
 					//ADD the delete function
-					//C206_CaseStudy.deleteMenu(MenuList);
+					//C206_CaseStudy.deleteorder(OrderList);
 
 				}else {
 					System.out.println("Invalid choice");
@@ -210,6 +212,7 @@ public class C206_CaseStudy {
 		}
 	}
 
+
 	public static void menu() {
 		C206_CaseStudy.setHeader("Canteen Ordering and Queuing System");
 		System.out.println("1. User");
@@ -228,9 +231,103 @@ public class C206_CaseStudy {
 		System.out.println(header);
 		Helper.line(80, "-");
 	}
+
 	//================================= Option 1 Add user (CRUD - Create) =================================
+	public static void addUser(ArrayList<User> userList) {
+		String name;
+		while (true) {
+			name = Helper.readString("Enter Name: ");
+			if (isValidName(name)) {
+				break;
+			} else {
+				System.out.println("Invalid name format. Please use alphabetic characters only.");
+			}
+		}
+
+		String email;
+		while (true) {
+			email = Helper.readString("Enter Email: ");
+			if (isValidEmail1(email)) {
+				break;
+			}else {
+				System.out.println("Invalid email format. Please include the @ symbol.");
+			}
+		}
+
+		int contactnum;
+		while (true) {
+			contactnum = Helper.readInt("Enter Contact Number: ");
+			if (contactnum != 0) {
+				break;
+			}else {
+				System.out.println("Contact Number cannot be empty. Please enter a valid number.");
+			}
+		}
+
+		User newUser = new User(name, email, contactnum);
+		userList.add(newUser);
+		System.out.println("User added: " + newUser.getName());
+	}
+
+
+
+	private static boolean isValidName(String name) {
+		return name.matches("[a-zA-Z]+");
+	}
+
+	private static boolean isValidEmail1(String email) {
+		return email.contains("@");
+
+	}
+
+
 	//================================= Option 1 View all users (CRUD - Read) =================================
+
+	public static void viewAllUsers(ArrayList<User> userList) {
+		Helper.line(80, "-");
+		System.out.println("All Users:");
+		printFormattedHeader();
+
+		for (User user : userList) {
+			printFormattedUser(user);
+		}
+
+		Helper.line(80, "-");
+	}
+
+	private static void printFormattedHeader() {
+		String header = String.format("%-20s %-20s %-25s\n", "NAME", "E-MAIL", "CONTACT NUMBER");
+		System.out.println(header + Helper.lineToString(80, "-"));
+	}
+
+	private static void printFormattedUser(User user) {
+		String userLine = String.format("%-20s %-20s %-25s\n", user.getName(), user.getEmail(), user.getContactnum());
+		System.out.println(userLine);
+
+	}
 	//================================= Option 1 Delete existing user (CRUD - Delete) =================================
+
+
+	public static void deleteUser(ArrayList<User> userList) {
+		String username = Helper.readString("Enter Name To Delete: ");
+		User userToRemove = null;
+
+		for (User user : userList) {
+			if (user.getName().equals(username)) {
+				userToRemove = user;
+				break;
+			}
+		}
+
+		if (userToRemove != null) {
+			userList.remove(userToRemove);
+			System.out.println("User deleted: " + userToRemove.getName());
+		} else {
+			System.out.println("User not found with username: " + username);
+		}
+	}
+
+
 
 	//================================= Option 2 Add stall (CRUD - Create) =================================
 	public static Stall inputStalls() {
@@ -363,7 +460,7 @@ public class C206_CaseStudy {
 	} 
 
 	//================================= Option 3 Delete existing menu (CRUD - Delete) =================================
-	public static boolean doDeleteMenu(ArrayList<Menu> menuList, String dishNameDel) { 
+	public static boolean doDeleteMenu(ArrayList<Menu> menuList, String string) { 
 		for (int i = 0; i < menuList.size(); i++) { 
 			String dishName = menuList.get(i).getDishName(); 
 			if (dishName.equalsIgnoreCase(dishNameDel)) { 
@@ -427,38 +524,43 @@ public class C206_CaseStudy {
 
 
 	//================================= Option 5 Add queue (CRUD - Create) =================================
-	public static void addQueue(ArrayList<Queue> queues, String queueId, String stallName) {
+    public static void addQueue(String queueId, String stallName) {
 		// Task 3 - Validate queueId and stallName inputs
 		if (queueId.trim().isEmpty() || stallName.trim().isEmpty()) {
 			System.out.println("Error: Queue ID and Stall Name must not be empty.");
 			return;
 		}
 
-
+ 
 
 		// Create a new Queue object and add it to the queues ArrayList
 		Queue queue = new Queue(queueId, stallName);
-		queues.add(queue);
+		queueList.add(queue);
 		System.out.println("Queue " + queueId + " for " + stallName + " added.");
 	}
 
+	 public static ArrayList<Queue> getQueues() {
+	        return queueList;
+	    }
 
 	//================================= Option 5 View all queues (CRUD - Read) =================================
 	public static void viewAllQueues() {
-		if (queue.isEmpty()) {
+		if (queueList.isEmpty()) {
 			System.out.println("No queues available.");
 		} else {
 			System.out.println("Queues in Canteen:");
-			for (Queue queue : queues) {
+			for (Queue queue : queueList) {
 				System.out.println(queue.getQueueId() + ": " + queue.getStallName());
 			}
 		}
 	}
 
+
+ 
 	//================================= Option 5 Delete existing queue (CRUD - Delete) =================================
 	public static void deleteQueue(String queueId) {
 		Queue queueToRemove = null;
-		for (Queue queue : queues) {
+		for (Queue queue : queueList) {
 			if (queue.getQueueId().equals(queueId)) {
 				queueToRemove = queue;
 				break;
@@ -468,10 +570,10 @@ public class C206_CaseStudy {
 
 
 		if (queueToRemove != null) {
-			// Confirm deletion 
+			// Confirm deletion
 			boolean isConfirmed = Helper.readBoolean("Are you sure you want to delete the queue " + queueId + "? (y/n): ");
 			if (isConfirmed) {
-				queues.remove(queueToRemove);
+				queueList.remove(queueToRemove);
 				System.out.println("Queue " + queueId + " has been deleted.");
 			} else {
 				System.out.println("Deletion of queue " + queueId + " canceled.");
@@ -481,7 +583,6 @@ public class C206_CaseStudy {
 			System.out.println("Error: Queue " + queueId + " not found.");
 		}
 	}
-
 
 	//================================= Option 6 Add feedback (CRUD - Create) =================================
 	private static void addFeedback(ArrayList<Feedback> feedbackList) {

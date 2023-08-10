@@ -243,4 +243,9 @@ public class Helper {
     return getDay(one) == getDay(two) && getMonth(one) == getMonth(two)
         && getYear(one) == getYear(two);
   }
+
+public static String lineToString(int i, String string) {
+	
+	return null;
+}
 }

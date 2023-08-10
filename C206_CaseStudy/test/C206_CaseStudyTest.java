@@ -19,8 +19,17 @@ public class C206_CaseStudyTest {
 
 	private Stall sl1;
 	private Stall sl2;
-	private Stall sl3;
 	private ArrayList<Stall> stallList;
+
+	private User user1;
+	private User user2;
+	private User user3;
+	private ArrayList<User> userList;
+
+	private Queue Queue1;
+	private Queue Queue2;
+	private Queue Queue3;
+	private ArrayList<Queue> queueList;
 
 	@Before
 	public void setUp() throws Exception {
@@ -37,10 +46,20 @@ public class C206_CaseStudyTest {
 
 		sl1 = new Stall("Stall 1","AAA","1A","CHI");
 		sl2 = new Stall("Stall 2","BBB","1B","MLY");
-		sl3 = new Stall("Stall 3","CCC","1C","IND");
+		new Stall("Stall 3","CCC","1C","IND");
 
 		stallList = new ArrayList<Stall>();
+
+
+		user1 = new User("Lew", "Lew111@gmail.com", 24681012);
+		user2 = new User("Pop", "Pop222@gmail.com", 12345678);
+		user3 = new User("Chill", "chill333@gmail.com", 87654321);
+
+
+		queueList = new ArrayList<>();
+
 	}
+
 
 
 
@@ -218,50 +237,151 @@ public class C206_CaseStudyTest {
 
 	@Test
 	public void testRetrievespecificStalls() {
-	    // Test Case 1: Test if stallList is not null and empty
-	    assertNotNull("Test if there is a valid stall ArrayList to add to", stallList);
-	    assertEquals("Test that the stall ArrayList is empty.", 0, stallList.size());
+		// Test Case 1: Test if stallList is not null and empty
+		assertNotNull("Test if there is a valid stall ArrayList to add to", stallList);
+		assertEquals("Test that the stall ArrayList is empty.", 0, stallList.size());
 
-	    // Prepare stalls for testing
-	    Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
-	    Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
+		// Prepare stalls for testing
+		Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
+		Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
 
-	    // Add stalls to the list
-	    C206_CaseStudy.addStalls(stallList, sl1);
-	    C206_CaseStudy.addStalls(stallList, sl2);
+		// Add stalls to the list
+		C206_CaseStudy.addStalls(stallList, sl1);
+		C206_CaseStudy.addStalls(stallList, sl2);
 
-	    // Check that the stall ArrayList size is 2
-	    assertEquals("Test that the stall ArrayList size is 2.", 2, stallList.size());
+		// Check that the stall ArrayList size is 2
+		assertEquals("Test that the stall ArrayList size is 2.", 2, stallList.size());
 
-	    // Attempt to retrieve the specific stalls
-	    String specificStalls = C206_CaseStudy.retrievespecificStalls(stallList, "AAA"); // Replace "AAA" with the desired keyword
-	    String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
+		// Attempt to retrieve the specific stalls
+		String specificStalls = C206_CaseStudy.retrievespecificStalls(stallList, "AAA"); // Replace "AAA" with the desired keyword
+		String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
 
-	    // Check that the details are displayed correctly
-	    assertEquals("Test that the display is correct.", testOutput, specificStalls);
+		// Check that the details are displayed correctly
+		assertEquals("Test that the display is correct.", testOutput, specificStalls);
 	}
 
 	@Test
 	public void testDeleteStall() {
-	    // Test Case 1
-	    ArrayList<Stall> stallList = new ArrayList<>();
-	    Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
-	    Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
-	    stallList.add(sl1);
-	    stallList.add(sl2);
+		// Test Case 1
+		ArrayList<Stall> stallList = new ArrayList<>();
+		Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
+		Stall sl2 = new Stall("STALL 2", "BBB", "1B", "MLY");
+		stallList.add(sl1);
+		stallList.add(sl2);
 
-	    // Attempt to delete an existing stall
-	    C206_CaseStudy.deleteStall(stallList, "STALL 1");
+		// Attempt to delete an existing stall
+		C206_CaseStudy.deleteStall(stallList, "STALL 1");
 
-	    // Check that the stall was deleted and list size decreased
-	    assertEquals("Test that the stall list size is 1 after deleting an existing stall.", 1, stallList.size());
+		// Check that the stall was deleted and list size decreased
+		assertEquals("Test that the stall list size is 1 after deleting an existing stall.", 1, stallList.size());
 
-	    // Test Case 2
-	    // Attempt to delete a non-existing stall
-	    C206_CaseStudy.deleteStall(stallList, "NON_EXISTING_STALL");
+		// Test Case 2
+		// Attempt to delete a non-existing stall
+		C206_CaseStudy.deleteStall(stallList, "NON_EXISTING_STALL");
 
-	    // Check that the list size remains the same
-	    assertEquals("Test that the stall list size remains 1 after attempting to delete a non-existing stall.", 1, stallList.size());
+		// Check that the list size remains the same
+		assertEquals("Test that the stall list size remains 1 after attempting to delete a non-existing stall.", 1, stallList.size());
+	}
+
+	@Test
+	public void testAddUser() {
+		assertNotNull("Test if there is valid userList to add to", userList);
+		assertEquals("Test that the user list is empty", 0, userList.size());
+
+		// Given an empty list, after adding 1 user, the size of the list is 1
+		userList.add(user1);
+		assertEquals("Test that the user list has 1 user", 1, userList.size());
+
+		// Add another user
+		userList.add(user2);
+		assertEquals("Test that the user list has 2 users", 2, userList.size());
+
+
+		// The user just added is the same as the last user in the list
+		assertEquals("Test that the last user in the list is the same as the added user", user2, userList.get(1));
+	}
+
+	@Test
+	public void testViewAllUsers() {
+		assertNotNull("Test if there is valid userList to add to", userList);
+		assertEquals("Test that the user list is empty", 0, userList.size());
+
+		// Add users to the list
+		userList.add(user1);
+		userList.add(user2);
+
+		// Test that the list is not empty
+		assertEquals("Test that the user arraylist size is 2", 2, userList.size());
+
+		// Attempt to retrieve the users
+		for (User user : userList) {
+			String allUsers = user.toString();
+			System.out.println(allUsers);
+		}
+	}
+
+	@Test
+	public void testDeleteUser() {
+		assertNotNull("Test if there is valid userList to add to", userList);
+		assertEquals("Test that the user list is empty", 0, userList.size());
+
+		// Attempt to delete user when the list is empty
+		userList.remove(user1);
+		assertEquals("Test that nothing is deleted", 0, userList.size());
+
+		// Add users to the list
+		userList.add(user1);
+		userList.add(user2);
+		userList.add(user3);
+
+		// Test that the list is not empty
+		assertEquals("Test that the user arraylist size is 3", 3, userList.size());
+
+		// Attempt to delete a user
+		userList.remove(user2);
+		assertEquals("Test that the user is deleted", 2, userList.size());
+	}
+
+	@Test
+	public void testAddQueue() {
+		// Test adding a new queue
+		C206_CaseStudy.addQueue("Q001", "Stall A");
+		assertEquals(1, C206_CaseStudy.getQueues().size());
+
+		// Test adding another queue
+		C206_CaseStudy.addQueue("Q002", "Stall B");
+		assertEquals(2, C206_CaseStudy.getQueues().size());
+
+		// Test adding a queue with an existing ID (should not be added)
+		C206_CaseStudy.addQueue("Q002", "Stall C");
+		assertEquals(2, C206_CaseStudy.getQueues().size());
+	}
+
+	@Test
+	public void testViewAllQueues() {
+		// Test viewing all queues when the list is empty
+		C206_CaseStudy.viewAllQueues(); // This should print "No queues available."
+
+		// Test viewing all queues when there are queues in the list
+		C206_CaseStudy.addQueue("Q001", "Stall A");
+		C206_CaseStudy.addQueue("Q002", "Stall B");
+		C206_CaseStudy.viewAllQueues();
+		// Expected output: "Queues in Canteen:\nQ001: Stall A\nQ002: Stall B"
+	}
+
+
+
+	@Test
+	public void testDeleteQueue() {
+		// Test deleting an existing queue
+		C206_CaseStudy.addQueue("Q001", "Stall A");
+		C206_CaseStudy.addQueue("Q002", "Stall B");
+		C206_CaseStudy.deleteQueue("Q001");
+		assertEquals(1, C206_CaseStudy.getQueues().size());
+
+		// Test deleting a non-existing queue
+		C206_CaseStudy.deleteQueue("Q003"); // This should print "Queue Q003 not found."
+		assertEquals(1, C206_CaseStudy.getQueues().size());
 	}
 
 
@@ -275,10 +395,20 @@ public class C206_CaseStudyTest {
 		fb2 = null;
 		fb3 = null;
 		feedbackList = null;
-		
+
 		sl1 = null;
 		sl2 = null;
-		sl3 = null;
 		stallList = null;
+
+		user1 = null;
+		user2 = null;
+		user3 = null;
+		userList = null;
+
+
+		Queue1 = null;
+		Queue2 = null;
+		Queue3 = null;
+		queueList = null;
 	}
 }
