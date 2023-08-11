@@ -1,47 +1,47 @@
 public class Stall {
 	private String stallNo;
-    private String stallName;
-    private String location;
-    private String foodCuisine;
-  
-    public Stall(String stallNo, String stallName, String location, String foodCuisine) {
-    	this.stallNo = stallNo;
-    	this.stallName = stallName;
-        this.location = location;
-        this.foodCuisine = foodCuisine;
-        this.stallNo = stallNo;
-    }
-    
-    public String getStallNo() {
-    	return stallNo;
-    }
-    
-    public void setStallNo(String stallNo) {
-    	this.stallNo = stallNo;
-    }
+	private String stallName;
+	private String location;
+	private String foodCuisine;
 
-    public String getStallName() {
-        return stallName;
-    }
+	public Stall(String stallNo, String stallName, String location, String foodCuisine) {
+		this.stallNo = stallNo;
+		this.stallName = stallName;
+		this.location = location;
+		this.foodCuisine = foodCuisine;
+		this.stallNo = stallNo;
+	}
 
-    public void setStallName(String stallName) {
-        this.stallName = stallName;
-    }
+	public String getStallNo() {
+		return stallNo;
+	}
 
-    public String getLocation() {
-        return location;
-    }
+	public void setStallNo(String stallNo) {
+		this.stallNo = stallNo;
+	}
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+	public String getStallName() {
+		return stallName;
+	}
 
-    public String getFoodCuisine() {
-        return foodCuisine;
-    }
+	public void setStallName(String stallName) {
+		this.stallName = stallName;
+	}
 
-    public void setFoodCuisine(String foodCuisine) {
-        this.foodCuisine = foodCuisine;
-    }
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getFoodCuisine() {
+		return foodCuisine;
+	}
+
+	public void setFoodCuisine(String foodCuisine) {
+		this.foodCuisine = foodCuisine;
+	}
 
 }
