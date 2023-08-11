@@ -272,7 +272,7 @@ public class C206_CaseStudy {
 		printFormattedHeader();
 
 		for (User user : userList) {
-			printFormattedUser(user);
+			printFormattedUser(user);         
 		}
 
 		Helper.line(80, "-");

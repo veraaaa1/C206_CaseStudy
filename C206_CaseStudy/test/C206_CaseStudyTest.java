@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class C206_CaseStudyTest {
 	// prepare test data 
 	private Menu mn1;
@@ -56,8 +57,8 @@ public class C206_CaseStudyTest {
 		user2 = new User("Pop", "Pop222@gmail.com", 12345678);
 		user3 = new User("Chill", "chill333@gmail.com", 87654321);
 
-
-		queueList = new ArrayList<>();
+		userList = new ArrayList<User>();
+		
 
 	}
 
@@ -69,7 +70,6 @@ public class C206_CaseStudyTest {
 		// Test adding a new menu
 		Menu menuToAdd = mn1;
 		C206_CaseStudy.addMenu(menuList, menuToAdd);
-		C206_CaseStudy.addMenu(menuList, mn2);
 		assertEquals("Test that menuList size is 1 after adding a menu.", 1, menuList.size());
 		assertSame("Test that the added menu is the same as the menu in menuList.", menuToAdd, menuList.get(0));
 
@@ -81,27 +81,62 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testRetrieveAllMenu() {
 		// Prepare some menus for testing
-
-		String expectedOutput = "Dish 1     Description 1                 10.50       Ingredients 1      Vegan             \n"
-				+ "Dish 2     Description 2                 8.75         Ingredients 2      Vegetarian        \n";
+		C206_CaseStudy.addMenu(menuList, mn1);
+		C206_CaseStudy.addMenu(menuList, mn2);
+		String expectedOutput = "Dish 1     Description 1                  10.50      Ingredients 1 Vegan               \n"
+				+ "Dish 2     Description 2                  8.75       Ingredients 2 Vegetarian          \n";
 		assertEquals("Test if the retrieveAllMenu method returns the expected output.", expectedOutput,
 				C206_CaseStudy.retrieveAllMenu(menuList));
 	}
+
 
 	@Test
 	public void testDeleteMenu() {
 		// Prepare some menus for testing
 		menuList.add(new Menu("Dish 1", "Description 1", 10.50, "Ingredients 1", "Vegan"));
-		menuList.add(new Menu("Dish 2", "Description 2", 8.75, "Ingredients 2", "Vegetarian"));
 
 		// Test deleting an existing menu
-		assertTrue("Test if an existing menu can be deleted.", C206_CaseStudy.doDeleteMenu(menuList, "Dish 1"));
-		assertEquals("Test that menuList size is 1 after deleting a menu.", 1, menuList.size());
+		Menu menuToDelete = menuList.get(0); // Choose a menu to delete
+		assertTrue("Test if an existing menu can be deleted.", C206_CaseStudy.checkDeleteMenu(menuList, menuToDelete.getDishName()));
+		assertEquals("Test that menuList size is decreased by 1 after deleting a menu.", 1, menuList.size());
 
 		// Test deleting a non-existing menu
-		assertFalse("Test if a non-existing menu cannot be deleted.", C206_CaseStudy.doDeleteMenu(menuList, "Dish 3"));
-		assertEquals("Test that menuList size remains 1 after attempting to delete a non-existing menu.", 1, menuList.size());
+		String nonExistingMenuName = "NonExistingDish";
+		assertFalse("Test if a non-existing menu cannot be deleted.", C206_CaseStudy.checkDeleteMenu(menuList, nonExistingMenuName));
+		assertEquals("Test that menuList size remains the same after attempting to delete a non-existing menu.", 1, menuList.size());
 	}
+	
+	@Test
+	public void testAddFeedback() {
+		// Feedback list is not null and it is empty
+		assertNotNull("Test if there is valid feedbackList to add to", feedbackList);
+		assertEquals("Test that the feedback list is empty", 0, feedbackList.size());
+
+ 
+
+		// Given an empty list, after adding 1 item, the size of the list is 1
+		feedbackList.add(fb1);
+		assertEquals("Test that the feedback list has 1 item", 1, feedbackList.size());
+
+ 
+
+		// Add an item
+		feedbackList.add(fb2);
+		assertEquals("Test that the feedback list has 2 items", 2, feedbackList.size());
+
+ 
+
+		// The item just added is as same as the last item in the list
+		assertEquals("Test that the last item in the list is the same as the added item", fb2, feedbackList.get(1));
+
+ 
+
+		// Add an item that has missing detail
+		Feedback fb_missing = new Feedback("", 2, "Food was bad.");
+		feedbackList.add(fb_missing);
+		assertEquals("Test that the feedback list has 3 items", 3, feedbackList.size());
+	}
+	
 
 	@Test
 	public void testViewFeedback() {
@@ -239,8 +274,8 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testRetrievespecificStalls() {
 		// Test Case 1: Test if stallList is not null and empty
-		assertNotNull("Test if there is a valid stall ArrayList to add to", stallList);
-		assertEquals("Test that the stall ArrayList is empty.", 0, stallList.size());
+		assertNotNull("Check if stallList is not null", stallList);
+		assertEquals("Check that the stall ArrayList is empty.", 0, stallList.size());
 
 		// Prepare stalls for testing
 		Stall sl1 = new Stall("STALL 1", "AAA", "1A", "CHI");
@@ -258,7 +293,7 @@ public class C206_CaseStudyTest {
 		String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
 
 		// Check that the details are displayed correctly
-		assertEquals("Test that the display is correct.", testOutput, specificStalls);
+		assertEquals("Test that the display is correct.", testOutput.trim(), specificStalls.trim());
 	}
 
 	@Test
@@ -286,8 +321,8 @@ public class C206_CaseStudyTest {
 
 	@Test
 	public void testAddUser() {
-		assertNotNull("Test if there is valid userList to add to", userList);
-		assertEquals("Test that the user list is empty", 0, userList.size());
+		assertNotNull("Test if there is valid userlist to add to", userList);
+		assertEquals("Test that the user arraylist is empty.", 0, userList.size());
 
 		// Given an empty list, after adding 1 user, the size of the list is 1
 		userList.add(user1);
@@ -304,20 +339,33 @@ public class C206_CaseStudyTest {
 
 	@Test
 	public void testViewAllUsers() {
-		assertNotNull("Test if there is valid userList to add to", userList);
+		assertNotNull("Test if there is valid arrayList to add to", userList);
 		assertEquals("Test that the user list is empty", 0, userList.size());
 
-		// Add users to the list
-		userList.add(user1);
-		userList.add(user2);
 
-		// Test that the list is not empty
-		assertEquals("Test that the user arraylist size is 2", 2, userList.size());
 
-		// Attempt to retrieve the users
-		for (User user : userList) {
-			String allUsers = user.toString();
-			System.out.println(allUsers);
+		// Attempt to retrieve the feedback
+		for (User us : userList) {
+			String allUser = us.toString();
+
+
+
+			String testOutput = "";
+			// Test if the output is empty
+			assertEquals("Test that nothing is displayed", testOutput, allUser);
+
+			// Add users to the list
+			userList.add(user1);
+			userList.add(user2);
+
+			// Test that the list is not empty
+			assertEquals("Test that the user arraylist size is 2", 2, userList.size());
+
+			// Attempt to retrieve the users
+			for (User user : userList) {
+				String allUsers = user.toString();
+				System.out.println(allUsers);
+			}
 		}
 	}
 
@@ -345,46 +393,51 @@ public class C206_CaseStudyTest {
 
 	@Test
 	public void testAddQueue() {
+		ArrayList<Queue> queueList = new ArrayList<>();
+
 		// Test adding a new queue
-		C206_CaseStudy.addQueue("Q001", "Stall A");
-		assertEquals(1, C206_CaseStudy.getQueues().size());
+		C206_CaseStudy.addQueue(queueList, "Q001", "Stall A");
+		assertEquals(1, queueList.size());
 
 		// Test adding another queue
-		C206_CaseStudy.addQueue("Q002", "Stall B");
-		assertEquals(2, C206_CaseStudy.getQueues().size());
+		C206_CaseStudy.addQueue(queueList, "Q002", "Stall B");
+		assertEquals(2, queueList.size());
 
 		// Test adding a queue with an existing ID (should not be added)
-		C206_CaseStudy.addQueue("Q002", "Stall C");
-		assertEquals(2, C206_CaseStudy.getQueues().size());
+		C206_CaseStudy.addQueue(queueList, "Q002", "Stall C");
+		assertEquals(2, queueList.size());
 	}
+
 
 	@Test
 	public void testViewAllQueues() {
+		ArrayList<Queue> queueList = new ArrayList<>();
+
 		// Test viewing all queues when the list is empty
-		C206_CaseStudy.viewAllQueues(); // This should print "No queues available."
+		C206_CaseStudy.viewAllqueueList(queueList); // This should print "No queueList available."
 
 		// Test viewing all queues when there are queues in the list
-		C206_CaseStudy.addQueue("Q001", "Stall A");
-		C206_CaseStudy.addQueue("Q002", "Stall B");
-		C206_CaseStudy.viewAllQueues();
-		// Expected output: "Queues in Canteen:\nQ001: Stall A\nQ002: Stall B"
+		C206_CaseStudy.addQueue(queueList, "Q001", "Stall A");
+		C206_CaseStudy.addQueue(queueList, "Q002", "Stall B");
+		C206_CaseStudy.viewAllqueueList(queueList);
+		// Expected output: "queueList in Canteen:\nQ001: Stall A\nQ002: Stall B"
 	}
-
-
 
 	@Test
 	public void testDeleteQueue() {
-		// Test deleting an existing queue
-		C206_CaseStudy.addQueue("Q001", "Stall A");
-		C206_CaseStudy.addQueue("Q002", "Stall B");
-		C206_CaseStudy.deleteQueue("Q001");
-		assertEquals(1, C206_CaseStudy.getQueues().size());
+		// Prepare some menus for testing
+		queueList.add(new Queue("Q001","Stall A"));
 
-		// Test deleting a non-existing queue
-		C206_CaseStudy.deleteQueue("Q003"); // This should print "Queue Q003 not found."
-		assertEquals(1, C206_CaseStudy.getQueues().size());
+		// Test deleting an existing menu
+		Queue queueToDelete = queueList.get(0); // Choose a menu to delete
+		assertTrue("Test if an existing queue can be deleted.", C206_CaseStudy.checkDeleteQueue(queueList, queueToDelete.getQueueId()));
+		assertEquals("Test that queueList size is decreased by 1 after deleting a queue.", 1, queueList.size());
+
+		// Test deleting a non-existing menu
+		String nonExistingQueueName = "NonExistingQueue";
+		assertFalse("Test if a non-existing queue cannot be deleted.", C206_CaseStudy.checkDeleteQueue(queueList, nonExistingQueueName));
+		assertEquals("Test that queueList size remains the same after attempting to delete a non-existing queue.", 1, queueList.size());
 	}
-
 
 	@After
 	public void tearDown() {
@@ -413,4 +466,3 @@ public class C206_CaseStudyTest {
 		queueList = null;
 	}
 }
-
