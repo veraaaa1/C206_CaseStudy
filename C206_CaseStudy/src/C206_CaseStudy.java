@@ -625,5 +625,3 @@ public class C206_CaseStudy {
 		System.out.println("Feedback deleted successfully.\n");
 	}
 }
-
->>>>>>> branch 'master' of https://github.com/veraaaa1/C206_CaseStudy.git

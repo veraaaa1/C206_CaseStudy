@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 
 import static org.junit.Assert.*;
 
@@ -416,5 +413,3 @@ public class C206_CaseStudyTest {
 		queueList = null;
 	}
 }
-
->>>>>>> branch 'master' of https://github.com/veraaaa1/C206_CaseStudy.git
