@@ -432,11 +432,11 @@ public class C206_CaseStudy {
 		    if (menu != null) {
 
 		      output += String.format("%-10s %-30s %-10.2f %-10s %-20s\n",menu.getDishName(),menu.getDescription(),menu.getPrice(),menu.getIngredients(),menu.getDietaryInformation());
-
-		    } else {
-		      // Handle null menu case  
-		      output += "Null menu object\n"; 
 		    }
+//		    } else {
+//		      // Handle null menu case  
+//		      output += "Null menu object\n"; 
+//		    }
 
 		  }
 
