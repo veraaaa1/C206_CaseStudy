@@ -6,67 +6,64 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+public class C206_CaseStudyTest { 
+	// prepare test data  
+	private Menu mn1; 
+	private Menu mn2; 
+	private ArrayList<Menu> menuList; 
 
-public class C206_CaseStudyTest {
-	// prepare test data 
-	private Menu mn1;
-	private Menu mn2;
-	private Menu mn3;
-	private ArrayList<Menu> menuList;
+	private Feedback fb1; 
+	private Feedback fb2; 
+	private Feedback fb3; 
+	private ArrayList<Feedback> feedbackList; 
 
-	private Feedback fb1;
-	private Feedback fb2;
-	private Feedback fb3;
-	private ArrayList<Feedback> feedbackList;
+	private Stall sl1; 
+	private Stall sl2; 
+	private ArrayList<Stall> stallList; 
 
-	private Stall sl1;
-	private Stall sl2;
-	private ArrayList<Stall> stallList;
+	private User user1; 
+	private User user2; 
+	private User user3; 
+	private ArrayList<User> userList; 
 
-	private User user1;
-	private User user2;
-	private User user3;
-	private ArrayList<User> userList;
-
-	private Queue queue1;
-	private Queue queue2;
-	private Queue queue3;
-	private ArrayList<Queue> queueList;
+	private Queue queue1; 
+	private Queue queue2; 
+	private Queue queue3; 
+	private ArrayList<Queue> queueList; 
 
 	private Order o1; 
 	private Order o2; 
-	private Order o3; 
 	private ArrayList<Order> orderList; 
 
-	@Before
-	public void setUp() {
 
-		mn1 = new Menu("Pasta", "Spaghetti with tomato sau", 7.5, "Pasta, tomatoes", "Vegetarian");
-		mn2 = new Menu("Salad", "Mixed greens with dressing", 5, "Lettuce, carrots", "Vegan");
-		mn3 = new Menu("Chicken rice", "Chicken with rice", 5.85, "chicken, rice", "Vegan"); 
+	@Before 
+	public void setUp() throws Exception { 
+		// Menu 
+		mn1 = new Menu("Dish 1", "Description 1", 10.50, "Ingredients 1", "Vegan"); 
+		mn2 = new Menu("Dish 2", "Description 2", 8.75, "Ingredients 2", "Vegetarian"); 
 
-		menuList = new ArrayList<Menu>();
+		menuList = new ArrayList<Menu>(); 
 
-		fb1 = new Feedback("Zongrong", 5, "Food was nice, especially the chicken drumstick!");
-		fb2 = new Feedback("Yi Lun", 3, "The spaghetti was pretty okay, but could be better...");
-		fb3 = new Feedback("Xue E", 2, "Oh my god, I hate the pepperoni pizza! Taste so bad...");
+		// Feedback 
+		fb1 = new Feedback("Zongrong", 5, "Food was nice, especially the chicken drumstick!"); 
+		fb2 = new Feedback("Yi Lun", 3, "The spaghetti was pretty okay, but could be better..."); 
+		fb3 = new Feedback("Xue E", 2, "Oh my god, I hate the pepperoni pizza! Taste so bad..."); 
 
-		feedbackList = new ArrayList<Feedback>();
+		feedbackList = new ArrayList<Feedback>(); 
 
 		// Stall 
-		sl1 = new Stall("Stall 1","AAA","1A","CHI");
-		sl2 = new Stall("Stall 2","BBB","1B","MLY");
-		new Stall("Stall 3","CCC","1C","IND");
+		sl1 = new Stall("Stall 1","AAA","1A","CHI"); 
+		sl2 = new Stall("Stall 2","BBB","1B","MLY"); 
+		new Stall("Stall 3","CCC","1C","IND"); 
 
-		stallList = new ArrayList<Stall>();
+		stallList = new ArrayList<Stall>(); 
 
+		// User 
+		user1 = new User("Lew", "Lew111@gmail.com", 24681012); 
+		user2 = new User("Pop", "Pop222@gmail.com", 12345678); 
+		user3 = new User("Chill", "chill333@gmail.com", 87654321); 
 
-		// User
-		user1 = new User("Lew", "Lew111@gmail.com", 24681012);
-		user2 = new User("Pop", "Pop222@gmail.com", 12345678);
-		user3 = new User("Chill", "chill333@gmail.com", 87654321);
-
-		userList = new ArrayList<User>();
+		userList = new ArrayList<User>(); 
 
 		// Queue 
 		queue1 = new Queue("Q001","Stall A"); 
@@ -78,7 +75,6 @@ public class C206_CaseStudyTest {
 		// Order 
 		o1 = new Order(1, "Spaghetti", 1); 
 		o2 = new Order(2, "Pizza", 2); 
-		o3 = new Order(3, "Chicken rice", 3); 
 
 		orderList = new ArrayList<Order>(); 
 	} 
@@ -86,70 +82,44 @@ public class C206_CaseStudyTest {
 
 
 
-	// ------------------------- Menu -------------------------------------
+
+	// ================================= Menu ================================= 
 	@Test 
 	public void testAddMenu() { 
 		// Test adding a new menu 
-
-		menuList.add(mn1); 
+		Menu menuToAdd = mn1; 
+		C206_CaseStudy.addMenu(menuList, menuToAdd); 
 		assertEquals("Test that menuList size is 1 after adding a menu.", 1, menuList.size()); 
-		assertSame("Test that the added menu is the same as the menu in menuList.", mn1, menuList.get(0)); 
-
-		// Test adding another menu
-		menuList.add(mn2);
-		assertEquals("Test that the menu list has 2 menus", 2, menuList.size());
+		assertSame("Test that the added menu is the same as the menu in menuList.", menuToAdd, menuList.get(0)); 
 
 		// Test adding a menu with duplicate dish name 
-
-		assertEquals("Test that the last menu in the list is the same as the added menu", mn2, menuList.get(1));
+		C206_CaseStudy.addMenu(menuList, menuToAdd); 
+		assertEquals("Test that menuList size remains 1 after adding a duplicate menu.", 1, menuList.size()); 
 	} 
 
 	@Test 
 	public void testRetrieveAllMenu() { 
-
-		menuList.add(mn1);
-		menuList.add(mn2);
-		menuList.add(mn3);
-
-
-		String expected =  "Pasta      Spaghetti with tomato sau      7.50       Pasta, tomatoes Vegetarian          \n" +
-				"Salad      Mixed greens with dressing     5.00       Lettuce, carrots Vegan               \n" +
-				"Chicken rice Chicken with rice              5.85       chicken, rice Vegan               " ;
-
-		String output = C206_CaseStudy.retrieveAllMenu(menuList);
-
-		assertEquals(expected.trim(), output.trim());
+		// Prepare some menus for testing 
+		C206_CaseStudy.addMenu(menuList, mn1); 
+		C206_CaseStudy.addMenu(menuList, mn2); 
+		String expectedOutput = "Dish 1     Description 1                  10.50      Ingredients 1 Vegan               \n" 
+				+ "Dish 2     Description 2                  8.75       Ingredients 2 Vegetarian          \n"; 
+		assertEquals("Test if the retrieveAllMenu method returns the expected output.", expectedOutput, 
+				C206_CaseStudy.retrieveAllMenu(menuList)); 
 	} 
 
-	@Test
-	public void testDeleteMenu() {
-		// Test Case 1
-		assertNotNull("Test if there is valid menuList to add to", menuList);
-		assertEquals("Test that the menu list is empty", 0, menuList.size());
+	@Test 
+	public void testDeleteMenu() {       
+		menuList.add(new Menu("Dish 1", "Description 1", 10.50, "Ingredients 1", "Vegan"));
+		// Test deleting an existing menu
+		Menu menuToDelete = menuList.get(0); 
+		assertTrue("Test if an existing menu can be deleted.", C206_CaseStudy.checkDeleteMenu(menuList, menuToDelete.getDishName()));        
+		assertEquals("Test that menuList size is decreased by 1 after deleting a menu.", 1, menuList.size());
+		
+		// Test deleting a non-existing menu
+		String nonExistingMenuName = "NonExistingDish";        assertFalse("Test if a non-existing menu cannot be deleted.", C206_CaseStudy.checkDeleteMenu(menuList, nonExistingMenuName));
+		assertEquals("Test that menuList size remains the same after attempting to delete a non-existing menu.", 1, menuList.size());    }
 
-		// Attempt to delete menu when the list is empty
-		menuList.remove(mn1);
-		assertEquals("Test that nothing is deleted", 0, menuList.size());
-
-
-
-		// Test Case 2
-		menuList.add(mn1);
-		menuList.add(mn2);
-		menuList.add(mn3);
-
-
-		// Test that the list is not empty
-		assertEquals("Test that the menu arraylist size is 3", 3, menuList.size());
-
-		// Attempt to delete the first feedback
-		menuList.remove(mn1);
-		assertEquals("Test that the first menu is deleted", 2, menuList.size());
-
-		// Attempt to delete the last feedback
-		menuList.remove(mn3);
-		assertEquals("Test that the last menu is deleted", 1, menuList.size());
-	}
 
 	// ------------------------------ Feedback ----------------------------------
 	@Test
