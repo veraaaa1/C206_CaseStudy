@@ -281,8 +281,8 @@ public class C206_CaseStudyTest {
 
 		// Attempt to retrieve the stalls
 		String allStalls = C206_CaseStudy.retrieveAllStalls(stallList);
-		String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
-		testOutput += String.format("%-10s %-10s %-10s %-10s\n", "STALL 2", "BBB", "1B", "MLY");
+		String testOutput = String.format("%-10s %-20s %-20s %-5s\n", "STALL 1", "AAA", "1A", "CHI");
+		testOutput += String.format("%-10s %-20s %-20s %-5s\n", "STALL 2", "BBB", "1B", "MLY");
 
 		// Check that the display is correct
 		assertEquals("Test that the display is correct.", testOutput, allStalls);
@@ -308,7 +308,7 @@ public class C206_CaseStudyTest {
 
 		// Attempt to retrieve the specific stalls
 		String specificStalls = C206_CaseStudy.retrievespecificStalls(stallList, "AAA"); // Replace "AAA" with the desired keyword
-		String testOutput = String.format("%-10s %-10s %-10s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
+		String testOutput = String.format("%-10s %-20s %-20s %-10s\n", "STALL 1", "AAA", "1A", "CHI");
 
 		// Check that the details are displayed correctly
 		assertEquals("Test that the display is correct.", testOutput.trim(), specificStalls.trim());
@@ -565,4 +565,3 @@ public class C206_CaseStudyTest {
 		queueList = null;
 	}
 }
-
